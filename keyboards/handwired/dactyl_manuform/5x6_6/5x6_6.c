@@ -16,3 +16,22 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include "5x6_6.h"
+#ifdef CONSOLE_ENABLE
+#include <print.h>
+#endif
+
+#ifdef RIGHTHANDKALA
+bool encoder_update_kb(uint8_t index, bool clockwise) {
+#ifdef CONSOLE_ENABLE
+	print("got to encoder_update_kb");
+	#endif
+    return encoder_update_user(index, clockwise);
+}
+
+bool dip_switch_update_kb(uint8_t index, bool active) { 
+#ifdef CONSOLE_ENABLE
+	print("got to dip_switch_update_kb");
+#endif
+    return dip_switch_update_user(index, active);
+}
+#endif

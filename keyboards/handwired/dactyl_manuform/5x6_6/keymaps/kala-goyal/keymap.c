@@ -16,6 +16,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include QMK_KEYBOARD_H
 #include "features/custom_shift_keys.h"
+#include "keymap.h"
 
 const custom_shift_key_t custom_shift_keys[] = {
     {KC_AMPERSAND,          KC_PERCENT  },
@@ -44,6 +45,34 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
     
     return true;
 };
+
+void keyboard_post_init_user(void) {
+  // Customise these values to desired behaviour
+  debug_enable=true;
+  debug_matrix=true;
+  //debug_keyboard=true;
+  //debug_mouse=true;
+}
+
+#ifdef RIGHTHANDKALA
+bool encoder_update_user(uint8_t index, bool clockwise) {
+    if (index == 0) {
+        if (clockwise) {
+            tap_code_delay(KC_VOLU, 10);
+        } else {
+            tap_code_delay(KC_VOLD, 10);
+        }
+    }
+    return false;
+};
+
+bool dip_switch_update_user(uint8_t index, bool active) { 
+    if (index == 0) {
+        tap_code(KC_MUTE);
+    }
+    return false;
+}
+#endif
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
@@ -74,6 +103,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______,   _______,     _______,    _______,    _______,    _______,    _______,    _______,    KC_P0,      _______,    _______,    _______,
                                 _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______,
                                                         _______,    _______,    _______,    _______,
-                                                        _______,    _______,    _______,    _______
+                                                        KC_NUM,     _______,    _______,    _______
     )
 };
